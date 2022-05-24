@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  fetcher:
+    build:
+      context: ./fetcher
+      dockerfile: Dockerfile
+    command: [python, ./fetcher/main.py]
+    env_file:
+      - ./fetcher/.env_fetcher
+    ports:
+      - "50051:50051"
+
+  mongodb:
+    image: bitnami/mongodb
+
+  worker:
+    build: ./fetcher
+    env_file:
+      - ./fetcher/.env_fetcher
+    command: [celery, --app, fetcher.worker.app, worker, --concurrency=8, --loglevel=INFO]
+    depends_on:
+      - redis
+      - mongodb
+
+  redis:
+    image: redis:alpine
+
+  flower:
+    image: mher/flower
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - FLOWER_PORT=5555
+    ports:
+      - 5555:5555
+    depends_on:
+        - worker

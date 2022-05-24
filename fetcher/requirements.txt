@@ -1,0 +1,10 @@
+asyncio
+celery[redis]
+flower
+gevent
+grpcio
+grpcio-tools
+motor
+protobuf
+redis
+websockets
