@@ -32,6 +32,6 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - FLOWER_PORT=5555
     ports:
-      - 5555:5555
+      - "5555:5555"
     depends_on:
         - worker
