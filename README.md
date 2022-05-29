@@ -4,4 +4,18 @@
 
 
 # Cryptowatcher project
-##Under development
+
+Project used for learning purposes where the following tools are going to be used:
+- Python
+- Go
+- gRPC
+- REST
+- NATS
+- Celery
+- MongoDB
+- MySQL
+- Redis
+
+## Under development
+
+flow.png
