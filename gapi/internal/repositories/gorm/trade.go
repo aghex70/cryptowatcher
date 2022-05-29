@@ -19,3 +19,39 @@ type Trade struct {
 	SellerID   int              `gorm:"column:seller_id"`
 	Source     string           `gorm:"column:source"`
 }
+
+func (g GormRepo) GetTrades() ([]domain.Trade, error) {
+	var trades []domain.Trade
+	tx := g.DB.Order("event_time").Find(&trades)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return trades, nil
+}
+
+func (g GormRepo) GetTradesBySymbol(symbol string) ([]domain.Trade, error) {
+	var trades []domain.Trade
+	tx := g.DB.Where(&Trade{Symbol: symbol}).Find(&trades)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return trades, nil
+}
+
+func (g GormRepo) GetTradesByEventType(eventType domain.EventType) ([]domain.Trade, error) {
+	var trades []domain.Trade
+	tx := g.DB.Where("event_type = ?", eventType).Find(&trades)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return trades, nil
+}
+
+func (g GormRepo) GetTradesByUserIdAndExternalId(fields map[string]int) ([]domain.Trade, error) {
+	var trades []domain.Trade
+	tx := g.DB.Where(fields).Find(&trades)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return trades, nil
+}

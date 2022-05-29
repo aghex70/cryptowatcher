@@ -9,11 +9,11 @@ type TradeInteractor struct {
 	tradeRepo ports.TradeRepository
 }
 
-func (interactor TradeInteractor) Fetch(source string) error {
+func (interactor TradeInteractor) Fetch(r ports.FetchRequest) error {
 	return nil
 }
 
-func (interactor TradeInteractor) StopFetch(source string) error{
+func (interactor TradeInteractor) StopFetch(r ports.StopFetchRequest) error{
 	return nil
 }
 

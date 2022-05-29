@@ -1,5 +1,9 @@
 package providers
 
+import (
+	"gapi-agp/pkg/errors"
+)
+
 type ProviderId int
 
 const (
@@ -19,6 +23,6 @@ func NewProvider(providerID ProviderId) (Provider, error) {
 	case FetcherProviderID:
 		return NewFetcherProvider(), nil
 	default:
-		return nil, ErrProviderNotFound
+		return nil, errors.ErrProviderNotFound
 	}
 }

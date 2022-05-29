@@ -6,7 +6,7 @@ type TradeRepository interface {
 	Get() ([]domain.Trade, error)
 	GetBySymbol(symbol string) ([]domain.Trade, error)
 	GetByEventType(eventType domain.EventType) ([]domain.Trade, error)
-	GetByUserIdAndExternalId(userId int, externalId int) ([]domain.Trade, error)
+	GetByUserIdAndExternalId(map[string]int) ([]domain.Trade, error)
 }
 
 type UserRepository interface {
