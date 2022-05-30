@@ -2,20 +2,16 @@
 [![Code style: isort](https://img.shields.io/badge/code%20style-isort-blue.svg)](https://isort.dev/)
 [![Code style: pylint](https://img.shields.io/badge/code%20style-pylint-blue.svg)](https://pypi.org/project/pylint/)
 
+# Cryptowatcher 
 
-# Cryptowatcher project
+- Project used for learning purposes. 
+- The goal of this project is to create a simple cryptocurrency watcher by gathering different technologies and using 
+them all in a single project Taking this into consideration, there will be some parts of the project that might be 
+  redundant. Therefore the project's architecture  could be 
+  greatly improved (that is not the project's scope).
 
-Project used for learning purposes where the following tools are going to be used:
-- Python
-- Go
-- gRPC
-- REST
-- NATS
-- Celery
-- MongoDB
-- MySQL
-- Redis
+## Architecture
+![cryptowatcher proposed architecture](Cryptowatcher architecture.jpg)
 
-## Under development
+## Work in progress
 
-flow.png
