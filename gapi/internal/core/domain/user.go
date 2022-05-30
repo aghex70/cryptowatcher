@@ -1,9 +1,9 @@
 package domain
 
 type User struct {
-	UserID     int64
-	Source     string
+	ID         uint
 	ExternalID int
+	Source     string
 }
 
 func NewUser() User {

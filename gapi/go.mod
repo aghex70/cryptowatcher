@@ -8,6 +8,8 @@ require (
 	github.com/spf13/viper v1.11.0
 	gorm.io/driver/mysql v1.3.3
 	gorm.io/gorm v1.23.5
+	google.golang.org/grpc v1.24.0
+	google.golang.org/protobuf v1.24.0
 )
 
 require (

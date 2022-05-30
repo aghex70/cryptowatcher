@@ -18,13 +18,15 @@ type Trade struct {
 	BuyerID    int              `gorm:"column:buyer_id"`
 	SellerID   int              `gorm:"column:seller_id"`
 	Source     string           `gorm:"column:source"`
+	CreatedAt  time.Time        `gorm:"column:created_at"`
+	UpdatedAt  time.Time        `gorm:"column:updated_at"`
 }
 
 func (g GormRepo) GetTrades() ([]domain.Trade, error) {
 	var trades []domain.Trade
 	tx := g.DB.Order("event_time").Find(&trades)
 	if tx.Error != nil {
-		return nil, tx.Error
+		return []domain.Trade{}, tx.Error
 	}
 	return trades, nil
 }
@@ -33,7 +35,7 @@ func (g GormRepo) GetTradesBySymbol(symbol string) ([]domain.Trade, error) {
 	var trades []domain.Trade
 	tx := g.DB.Where(&Trade{Symbol: symbol}).Find(&trades)
 	if tx.Error != nil {
-		return nil, tx.Error
+		return []domain.Trade{}, tx.Error
 	}
 	return trades, nil
 }
@@ -51,7 +53,7 @@ func (g GormRepo) GetTradesByUserIdAndExternalId(fields map[string]int) ([]domai
 	var trades []domain.Trade
 	tx := g.DB.Where(fields).Find(&trades)
 	if tx.Error != nil {
-		return nil, tx.Error
+		return []domain.Trade{}, tx.Error
 	}
 	return trades, nil
 }

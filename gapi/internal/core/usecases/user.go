@@ -14,5 +14,5 @@ func (interactor UserInteractor) Get(userID int) (domain.User, error) {
 }
 
 func (interactor UserInteractor) GetTrades(userID int) ([]domain.Trade, error) {
-	return []domain.Trade, nil
+	return []domain.Trade{}, nil
 }
