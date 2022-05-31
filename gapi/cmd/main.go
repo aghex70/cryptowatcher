@@ -2,17 +2,31 @@ package main
 
 import (
 	"gapi-agp/infrastructure/config"
-	"gapi-agp/server"
+	"gapi-agp/infrastructure/persistence"
+	"gapi-agp/internal/repositories/gorm"
 )
 
 func main() {
 	config.LoadConfig(config.CONFIG_PATH)
 
-	//Iniciar repos de base de datos
-	//Iniciar servicios (casos de uso)
-	//Pasarselos al servidor
-	//Iniciar servidor
-	srv := server.NewServer()
-	srv.StartServer()
+	db, err := persistence.NewSqlDB()
+	if err != nil {
+		panic(err)
+	}
+
+	gormDB, err := persistence.NewGormDB(db)
+	if err != nil {
+		panic(err)
+	}
+
+	cache, err := persistence.NewRedisCache()
+	if err != nil {
+		panic(err)
+	}
+
+	tradeRepo, err := gorm.NewTradeGormRepo(gormDB)
+	if err != nil {
+		panic(err)
+	}
 
 }

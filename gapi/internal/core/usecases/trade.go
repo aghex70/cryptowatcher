@@ -7,11 +7,18 @@ import (
 	"gapi-agp/internal/core/domain"
 	"gapi-agp/internal/core/ports"
 	"gapi-agp/internal/core/usecases/pb"
+	"gapi-agp/pkg/providers"
 	"google.golang.org/grpc"
 )
 
 type TradeInteractor struct {
-	tradeRepo ports.TradeRepository
+	tradeRepo       ports.TradeRepository
+	cacheRepo       ports.CacheRepository
+	providerManager providers.ProviderManager
+}
+
+func NewTradeInteractor(tradeRepo ports.TradeRepository, cacheRepo ports.CacheRepository, providerManager providers.ProviderManager) *TradeInteractor {
+	return &TradeInteractor{tradeRepo: tradeRepo, cacheRepo: cacheRepo, providerManager: providerManager}
 }
 
 func (interactor TradeInteractor) Fetch(r ports.FetchRequest) error {

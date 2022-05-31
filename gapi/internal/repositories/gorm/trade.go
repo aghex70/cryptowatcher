@@ -1,9 +1,16 @@
 package gorm
 
 import (
+	"database/sql"
 	"gapi-agp/internal/core/domain"
+	"gorm.io/gorm"
 	"time"
 )
+
+type TradeGormRepo struct {
+	*gorm.DB
+	SqlDB *sql.DB
+}
 
 type Trade struct {
 	ID         int              `gorm:"coulmn:id;type:int;auto_increment;primary_key"`
@@ -22,7 +29,13 @@ type Trade struct {
 	UpdatedAt  time.Time        `gorm:"column:updated_at"`
 }
 
-func (g GormRepo) GetTrades() ([]domain.Trade, error) {
+func NewTradeGormRepo(db *gorm.DB) (*TradeGormRepo, error) {
+	return &TradeGormRepo{
+		DB: db,
+	}, nil
+}
+
+func (g TradeGormRepo) GetTrades() ([]domain.Trade, error) {
 	var trades []domain.Trade
 	tx := g.DB.Order("event_time").Find(&trades)
 	if tx.Error != nil {
@@ -31,7 +44,7 @@ func (g GormRepo) GetTrades() ([]domain.Trade, error) {
 	return trades, nil
 }
 
-func (g GormRepo) GetTradesBySymbol(symbol string) ([]domain.Trade, error) {
+func (g TradeGormRepo) GetTradesBySymbol(symbol string) ([]domain.Trade, error) {
 	var trades []domain.Trade
 	tx := g.DB.Where(&Trade{Symbol: symbol}).Find(&trades)
 	if tx.Error != nil {
@@ -40,7 +53,7 @@ func (g GormRepo) GetTradesBySymbol(symbol string) ([]domain.Trade, error) {
 	return trades, nil
 }
 
-func (g GormRepo) GetTradesByEventType(eventType domain.EventType) ([]domain.Trade, error) {
+func (g TradeGormRepo) GetTradesByEventType(eventType domain.EventType) ([]domain.Trade, error) {
 	var trades []domain.Trade
 	tx := g.DB.Where("event_type = ?", eventType).Find(&trades)
 	if tx.Error != nil {
@@ -49,7 +62,7 @@ func (g GormRepo) GetTradesByEventType(eventType domain.EventType) ([]domain.Tra
 	return trades, nil
 }
 
-func (g GormRepo) GetTradesByUserIdAndExternalId(fields map[string]int) ([]domain.Trade, error) {
+func (g TradeGormRepo) GetTradesByUserIdAndExternalId(fields map[string]int) ([]domain.Trade, error) {
 	var trades []domain.Trade
 	tx := g.DB.Where(fields).Find(&trades)
 	if tx.Error != nil {

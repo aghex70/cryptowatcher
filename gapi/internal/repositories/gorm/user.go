@@ -1,9 +1,16 @@
 package gorm
 
 import (
+	"database/sql"
 	"gapi-agp/internal/core/domain"
+	"gorm.io/gorm"
 	"time"
 )
+
+type UserGormRepo struct {
+	*gorm.DB
+	SqlDB *sql.DB
+}
 
 type User struct {
 	ID         uint   `gorm:"column:id;type:int;auto_increment;primary_key"`
@@ -13,7 +20,13 @@ type User struct {
 	UpdatedAt  time.Time
 }
 
-func (g GormRepo) GetUser(userID int) (user domain.User, err error) {
+func NewUserGormRepo(db *gorm.DB) (*UserGormRepo, error) {
+	return &UserGormRepo{
+		DB: db,
+	}, nil
+}
+
+func (g UserGormRepo) GetUser(userID int) (user domain.User, err error) {
 	var u User
 	tx := g.DB.Where("id = ?", userID).Find(&u)
 	if tx.Error != nil {
