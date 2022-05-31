@@ -12,14 +12,15 @@ type UserInteractor struct {
 	providerManager providers.ProviderManager
 }
 
-func NewUserInteractor(userRepo ports.UserRepository, cacheRepo ports.CacheRepository, providerManager providers.ProviderManager) *UserInteractor {
-	return &UserInteractor{userRepo: userRepo, cacheRepo: cacheRepo, providerManager: providerManager}
+func NewUserInteractor(userRepo ports.UserRepository, cacheRepo ports.CacheRepository, providerManager *providers.ProviderManager) *UserInteractor {
+	return &UserInteractor{userRepo: userRepo, cacheRepo: cacheRepo, providerManager: *providerManager}
 }
 
 func (interactor UserInteractor) Get(userID int) (domain.User, error) {
 	return domain.NewUser(), nil
 }
 
-func (interactor UserInteractor) GetTrades(userID int) ([]domain.Trade, error) {
-	return []domain.Trade{}, nil
+func (interactor UserInteractor) GetUserTrades(userID int) ([]domain.Trade, error) {
+	//TODO implement me
+	panic("implement me")
 }

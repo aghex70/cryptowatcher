@@ -17,8 +17,8 @@ type TradeInteractor struct {
 	providerManager providers.ProviderManager
 }
 
-func NewTradeInteractor(tradeRepo ports.TradeRepository, cacheRepo ports.CacheRepository, providerManager providers.ProviderManager) *TradeInteractor {
-	return &TradeInteractor{tradeRepo: tradeRepo, cacheRepo: cacheRepo, providerManager: providerManager}
+func NewTradeInteractor(tradeRepo ports.TradeRepository, cacheRepo ports.CacheRepository, providerManager *providers.ProviderManager) *TradeInteractor {
+	return &TradeInteractor{tradeRepo: tradeRepo, cacheRepo: cacheRepo, providerManager: *providerManager}
 }
 
 func (interactor TradeInteractor) Fetch(r ports.FetchRequest) error {
