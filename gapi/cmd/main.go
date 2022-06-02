@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gapi-agp/infrastructure/config"
+	"gapi-agp/config"
 	"gapi-agp/infrastructure/persistence"
 	"gapi-agp/internal/core/usecases"
 	"gapi-agp/internal/repositories/gorm"
@@ -49,8 +49,8 @@ func main() {
 	}
 
 	providerManager := providers.NewProviderManager()
-	// Initialize usecases (services)
-	tradeService := usecases.NewTradeInteractor(tradeRepo, cacheRepo, providerManager)
+	logger := config.NewLogger()
+	tradeService := usecases.NewTradeInteractor(tradeRepo, cacheRepo, providerManager, logger.ZapLogger)
 	userService := usecases.NewUserInteractor(userRepo, cacheRepo, providerManager)
 
 	// Start server

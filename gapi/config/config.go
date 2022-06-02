@@ -16,8 +16,10 @@ type Config struct {
 	Server    ServerConfig
 }
 
-func LoadConfig(path string) (Config, error) {
-	config := Config{}
+var C Config
+
+func LoadConfig(path string) {
+	Config := &C
 	cacheConfig, err := LoadCacheConfig(path)
 	if err != nil {
 		log.Fatal(err)
@@ -39,10 +41,9 @@ func LoadConfig(path string) (Config, error) {
 		log.Fatal(err)
 	}
 
-	config.Logger = loggerConfig
-	config.Cache = cacheConfig
-	config.Database = databaseConfig
-	config.Providers = providersConfig
-	config.Server = serverConfig
-	return config, nil
+	Config.Logger = loggerConfig
+	Config.Cache = cacheConfig
+	Config.Database = databaseConfig
+	Config.Providers = providersConfig
+	Config.Server = serverConfig
 }

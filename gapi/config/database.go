@@ -17,6 +17,7 @@ type DatabaseConfig struct {
 	MaxConnLifeTime    time.Duration `mapstructure:"DB_MAX_CONN_LIFE_TIME"`
 	Dialect            string        `mapstructure:"DB_DIALECT"`
 	MigrationDir       string        `mapstructure:"DB_MIGRATION_DIR"`
+	Net                string        `mapstructure:"DB_NETWORK"`
 	LogQuery           bool
 }
 

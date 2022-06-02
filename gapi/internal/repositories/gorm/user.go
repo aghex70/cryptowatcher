@@ -3,13 +3,15 @@ package gorm
 import (
 	"database/sql"
 	"gapi-agp/internal/core/domain"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"time"
 )
 
 type UserGormRepo struct {
 	*gorm.DB
-	SqlDB *sql.DB
+	SqlDB  *sql.DB
+	logger *zap.Logger
 }
 
 type User struct {

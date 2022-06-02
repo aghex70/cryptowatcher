@@ -5,6 +5,7 @@ import (
 )
 
 type CacheConfig struct {
+	DB       int    `mapstructure:"CACHE_DB"`
 	Host     string `mapstructure:"CACHE_HOST"`
 	Port     int    `mapstructure:"CACHE_PORT"`
 	Name     string `mapstructure:"CACHE_NAME"`

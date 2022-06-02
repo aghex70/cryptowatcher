@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"gapi-agp/infrastructure/config"
+	"gapi-agp/config"
 	"gapi-agp/internal/core/handlers"
 	"gapi-agp/internal/core/ports"
 	"net/http"
@@ -27,6 +27,7 @@ func (s *Server) StartServer() error {
 	http.HandleFunc("/user/trades", handler.GetUserTrades)
 
 	address := fmt.Sprintf("%s:%d", config.C.Server.Host, config.C.Server.Port)
+	fmt.Println("Server started at", address)
 	err := http.ListenAndServe(address, nil)
 	if err != nil {
 		return err

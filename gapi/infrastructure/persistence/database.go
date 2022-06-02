@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"fmt"
-	"gapi-agp/infrastructure/config"
+	"gapi-agp/config"
 	"github.com/go-sql-driver/mysql"
 )
 

@@ -1,12 +1,14 @@
 package providers
 
 import (
-	"gapi-agp/infrastructure/config"
+	"gapi-agp/config"
+	"go.uber.org/zap"
 )
 
 type FetcherProvider struct {
 	ID     ProviderId
 	config config.FetcherConfig
+	logger *zap.Logger
 }
 
 func NewFetcherProvider() FetcherProvider {

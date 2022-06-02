@@ -2,7 +2,7 @@ package persistence
 
 import (
 	"fmt"
-	"gapi-agp/infrastructure/config"
+	"gapi-agp/config"
 	"github.com/go-redis/redis/v8"
 )
 

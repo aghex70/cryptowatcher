@@ -4,12 +4,14 @@ import (
 	"gapi-agp/internal/core/domain"
 	"gapi-agp/internal/core/ports"
 	"gapi-agp/pkg/providers"
+	"go.uber.org/zap"
 )
 
 type UserInteractor struct {
 	userRepo        ports.UserRepository
 	cacheRepo       ports.CacheRepository
 	providerManager providers.ProviderManager
+	logger          *zap.Logger
 }
 
 func NewUserInteractor(userRepo ports.UserRepository, cacheRepo ports.CacheRepository, providerManager *providers.ProviderManager) *UserInteractor {

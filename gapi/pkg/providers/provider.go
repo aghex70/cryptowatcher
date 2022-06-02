@@ -1,8 +1,9 @@
 package providers
 
 import (
-	"gapi-agp/infrastructure/config"
+	"gapi-agp/config"
 	"gapi-agp/pkg/errors"
+	"go.uber.org/zap"
 )
 
 type ProviderId int
@@ -19,6 +20,7 @@ type Provider interface {
 
 type ProviderManager struct {
 	providersConfig config.ProvidersConfig
+	logger          *zap.Logger
 }
 
 func NewProviderManager() *ProviderManager {

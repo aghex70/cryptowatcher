@@ -1,8 +1,9 @@
 package config
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
+	"log"
 )
 
 type LoggerConfig struct {
@@ -15,8 +16,6 @@ func LoadLoggerConfig(path string) (config LoggerConfig, err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName(CONFIG_NAME)
 	viper.SetConfigType(CONFIG_TYPE)
-	fmt.Println("CONFIG_NAME:", CONFIG_NAME)
-	fmt.Println("CONFIG_TYPE:", CONFIG_TYPE)
 	viper.AutomaticEnv()
 
 	err = viper.ReadInConfig()
@@ -26,4 +25,17 @@ func LoadLoggerConfig(path string) (config LoggerConfig, err error) {
 
 	err = viper.Unmarshal(&config)
 	return config, err
+}
+
+type Logger struct {
+	ZapLogger *zap.Logger
+}
+
+func NewLogger() *Logger {
+	l, err := zap.NewProduction()
+	if err != nil {
+		log.Fatalf("Status: Failed to initialize zap logger: %v", err)
+	}
+	l.Info("Zap log is now initialized")
+	return &Logger{ZapLogger: l}
 }
