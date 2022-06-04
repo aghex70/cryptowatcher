@@ -5,6 +5,8 @@ import (
 	"gapi-agp/config"
 	"gapi-agp/internal/core/handlers"
 	"gapi-agp/internal/core/ports"
+	"gapi-agp/internal/logger"
+	"go.uber.org/zap"
 	"net/http"
 )
 
@@ -27,11 +29,13 @@ func (s *Server) StartServer() error {
 	http.HandleFunc("/user/trades", handler.GetUserTrades)
 
 	address := fmt.Sprintf("%s:%d", config.C.Server.Host, config.C.Server.Port)
-	fmt.Println("Server started at", address)
+	logger.ZapLogger.Info("Starting server", zap.String("address", address))
 	err := http.ListenAndServe(address, nil)
 	if err != nil {
+		logger.ZapLogger.Error("Error starting server", zap.Error(err))
 		return err
 	}
+	logger.ZapLogger.Info("Server started")
 	return nil
 }
 

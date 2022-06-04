@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"gapi-agp/internal/core/ports"
+	"gapi-agp/internal/logger"
 	"github.com/golang/gddo/httputil/header"
 	"go.uber.org/zap"
 	"io"
@@ -27,6 +28,7 @@ func NewRestHandler(tradeUseCase ports.TradeUseCase, userUseCase ports.UserUseCa
 }
 
 func (h RestHandler) FetchOrders(w http.ResponseWriter, r *http.Request) {
+	logger.ZapLogger.Info("FetchOrders")
 	// Get source param from request body
 	var fr ports.FetchRequest
 	err := decodeJSONBody(w, r, &fr)
@@ -50,6 +52,7 @@ func (h RestHandler) FetchOrders(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h RestHandler) StopFetchOrders(w http.ResponseWriter, r *http.Request) {
+	logger.ZapLogger.Info("FetchOrders")
 	err := r.ParseForm()
 	if err != nil {
 		return
@@ -65,6 +68,7 @@ func (h RestHandler) StopFetchOrders(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h RestHandler) GetTrades(w http.ResponseWriter, r *http.Request) {
+	logger.ZapLogger.Info("FetchOrders")
 	trades, err := h.tradeUseCase.Get()
 	b, err := json.Marshal(trades)
 	if err != nil {
@@ -80,6 +84,7 @@ func (h RestHandler) GetTrades(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h RestHandler) GetSales(w http.ResponseWriter, r *http.Request) {
+	logger.ZapLogger.Info("FetchOrders")
 	sales, err := h.tradeUseCase.GetSales()
 	b, err := json.Marshal(sales)
 	if err != nil {
@@ -95,6 +100,7 @@ func (h RestHandler) GetSales(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h RestHandler) GetPurchases(w http.ResponseWriter, r *http.Request) {
+	logger.ZapLogger.Info("FetchOrders")
 	purchases, err := h.tradeUseCase.GetPurchases()
 	b, err := json.Marshal(purchases)
 	if err != nil {
@@ -110,6 +116,7 @@ func (h RestHandler) GetPurchases(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h RestHandler) GetUser(w http.ResponseWriter, r *http.Request) {
+	logger.ZapLogger.Info("FetchOrders")
 	userID := 1
 	user, err := h.userUseCase.Get(userID)
 	b, err := json.Marshal(user)
@@ -126,6 +133,7 @@ func (h RestHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h RestHandler) GetUserTrades(w http.ResponseWriter, r *http.Request) {
+	logger.ZapLogger.Info("FetchOrders")
 	userID := 1
 	trades, err := h.userUseCase.GetUserTrades(userID)
 	b, err := json.Marshal(trades)

@@ -9,10 +9,14 @@ services:
     env_file:
       - ./fetcher/.env_fetcher
     ports:
-      - "50051:50051"
+      - "10002:10002"
+    depends_on:
+      - worker
 
   mongodb:
     image: bitnami/mongodb
+    ports:
+      - "10017:10017"
 
   worker:
     build: ./fetcher
@@ -25,13 +29,72 @@ services:
 
   redis:
     image: redis:alpine
+#    environment:
+#      - REDIS_PORT=10379
+##      - REDIS_PASSWORD=redis
+##      - REDIS_MAXMEMORY=256mb
+##      - REDIS_MAXMEMORY_POLICY=allkeys-lru
+##      - REDIS_MAXMEMORY_SAMPLES=3
+##      - REDIS_MAXMEMORY_SECONDS=60
+##      - REDIS_MAXMEMORY_EVICTION_PERC=10
+##      - REDIS_MAXMEMORY_EVICTION_SECONDS=60
+##      - REDIS_MAXMEMORY_GRACE_PERIOD=60
+##      - REDIS_MAXMEMORY_HARD_LIMIT=false
+##      - REDIS_MAXMEMORY_LFU_SAMPLES=3
+##      - REDIS_MAXMEMORY_LFU_DECAY_TIME=3600
+##      - REDIS_MAXMEMORY_LRU_SAMPLES=3
+##      - REDIS_MAXMEMORY_LRU_DECAY_TIME=3600
+##      - REDIS_MAXMEMORY_SORT_LIMIT=10
+##      - REDIS_MAXMEMORY_ASYNC=true
+##      - REDIS_MAXMEMORY_EVICTION_ASYNC=true
+##      - REDIS_MAXMEMORY_EVICTION_FREQUENCY=10000
+#      - REDIS_HOST=redis
+#    ports:
+#      - "10379:10379"
 
   flower:
     image: mher/flower
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - FLOWER_PORT=5555
+      - CELERY_BROKER_URL=redis://redis:10379/0
+      - FLOWER_PORT=10555
     ports:
-      - "5555:5555"
+      - "10555:10555"
     depends_on:
-        - worker
+      - worker
+      - redis
+
+  gapi:
+    build:
+      context: ./gapi
+      dockerfile: Dockerfile
+    command: [go, run, ./cmd/main.go]
+    env_file:
+      - ./gapi/config/.env_gapi
+    ports:
+      - "10001:10001"
+    depends_on:
+      - db
+#    networks:
+#      - cryptowatcher
+    links:
+      - fetcher
+
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=cryptowatcher
+      - MYSQL_USER=crypto
+      - MYSQL_PASSWORD=crypto
+#      - MYSQL_HOST=db
+      - MYSQL_TCP_PORT=10306
+    ports:
+      - "10306:10306"
+#    networks:
+#      - cryptowatcher
+#    volumes:
+#      - ./gapi/config/mysql:/var/lib/mysql
+
+#networks:
+#  cryptowatcher:
+#    driver: "bridge"

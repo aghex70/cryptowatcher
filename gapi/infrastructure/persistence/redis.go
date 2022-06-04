@@ -3,11 +3,13 @@ package persistence
 import (
 	"fmt"
 	"gapi-agp/config"
+	"gapi-agp/internal/logger"
 	"github.com/go-redis/redis/v8"
 )
 
 func NewRedisCache() (*redis.Client, error) {
 	address := fmt.Sprintf("%s:%d", config.C.Cache.Host, config.C.Cache.Port)
+	logger.ZapLogger.Info("Connecting to Redis")
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     address,
 		Password: config.C.Cache.Password,
