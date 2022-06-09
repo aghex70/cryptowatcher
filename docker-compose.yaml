@@ -15,8 +15,10 @@ services:
 
   mongodb:
     image: bitnami/mongodb
+    environment:
+        - MONGO_INITDB_DATABASE=fetcher
     ports:
-      - "10017:10017"
+      - "27017:27017"
 
   worker:
     build: ./fetcher
@@ -26,6 +28,16 @@ services:
     depends_on:
       - redis
       - mongodb
+
+  courier:
+    build:
+      context: ./courier
+      dockerfile: Dockerfile
+    command: [python, /app/courier-py/main.py, --queue=sender]
+    env_file:
+      - ./courier/.env
+    depends_on:
+        - mongodb
 
   redis:
     image: redis:alpine
@@ -90,11 +102,3 @@ services:
       - MYSQL_TCP_PORT=10306
     ports:
       - "10306:10306"
-#    networks:
-#      - cryptowatcher
-#    volumes:
-#      - ./gapi/config/mysql:/var/lib/mysql
-
-#networks:
-#  cryptowatcher:
-#    driver: "bridge"
