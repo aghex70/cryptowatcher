@@ -39,30 +39,18 @@ services:
     depends_on:
         - mongodb
 
+  interceptor:
+    build:
+      context: ./interceptor
+      dockerfile: Dockerfile
+    command: [python, /app/interceptor-py/main.py, --queue=receiver]
+    env_file:
+      - ./interceptor/.env
+    depends_on:
+      - db
+
   redis:
     image: redis:alpine
-#    environment:
-#      - REDIS_PORT=10379
-##      - REDIS_PASSWORD=redis
-##      - REDIS_MAXMEMORY=256mb
-##      - REDIS_MAXMEMORY_POLICY=allkeys-lru
-##      - REDIS_MAXMEMORY_SAMPLES=3
-##      - REDIS_MAXMEMORY_SECONDS=60
-##      - REDIS_MAXMEMORY_EVICTION_PERC=10
-##      - REDIS_MAXMEMORY_EVICTION_SECONDS=60
-##      - REDIS_MAXMEMORY_GRACE_PERIOD=60
-##      - REDIS_MAXMEMORY_HARD_LIMIT=false
-##      - REDIS_MAXMEMORY_LFU_SAMPLES=3
-##      - REDIS_MAXMEMORY_LFU_DECAY_TIME=3600
-##      - REDIS_MAXMEMORY_LRU_SAMPLES=3
-##      - REDIS_MAXMEMORY_LRU_DECAY_TIME=3600
-##      - REDIS_MAXMEMORY_SORT_LIMIT=10
-##      - REDIS_MAXMEMORY_ASYNC=true
-##      - REDIS_MAXMEMORY_EVICTION_ASYNC=true
-##      - REDIS_MAXMEMORY_EVICTION_FREQUENCY=10000
-#      - REDIS_HOST=redis
-#    ports:
-#      - "10379:10379"
 
   flower:
     image: mher/flower
