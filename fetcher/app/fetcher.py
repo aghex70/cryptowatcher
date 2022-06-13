@@ -1,12 +1,9 @@
-import logging
-from typing import List
+from typing import List, Union
 
-import config
-import fetcher_pb2
-import fetcher_pb2_grpc
-import tasks
-
-logger = logging.getLogger("fetcher.service")
+from app import tasks
+from config import settings
+from config.logger import logger
+from grpc_server import fetcher_pb2, fetcher_pb2_grpc
 
 
 class FetcherService(fetcher_pb2_grpc.FetcherServiceServicer):
@@ -29,7 +26,9 @@ class FetcherService(fetcher_pb2_grpc.FetcherServiceServicer):
         )
 
     @staticmethod
-    def _handle_fetch_request(request: fetcher_pb2.FetchTradesRequest) -> List[int]:
+    def _handle_fetch_request(
+        request: fetcher_pb2.FetchTradesRequest,
+    ) -> Union[List[int], None]:
         """Handle a FetchTrades request.
         :param request: The request to handle.
         :return: A list of task_ids.
@@ -37,7 +36,7 @@ class FetcherService(fetcher_pb2_grpc.FetcherServiceServicer):
         task_ids = []
         for req in request.sources:
             source = req.source
-            configuration = config.websockets_configuration.get(source)
+            configuration = settings.BINANCE_WEBSOCKET_CONFIGURATION.get(source)
             if not configuration:
                 logger.error("Websocket configuration not found. Source: %s", source)
                 return None

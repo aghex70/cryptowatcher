@@ -1,7 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 
 import json
-import logging
 import os
 from typing import Dict, Optional
 
@@ -9,13 +8,12 @@ import celery
 import motor.motor_asyncio
 import websockets
 from celery import Celery
-
-logger = logging.getLogger("fetcher.tasks")
-
+from config import settings
+from config.logger import logger
 
 app = Celery(
-    broker=os.environ["CELERY_BROKER_URL"],
-    backend=os.environ["CELERY_RESULT_BACKEND"],
+    broker=settings.CELERY_BROKER_URL,
+    backend=settings.CELERY_RESULT_BACKEND,
     include=("fetcher.tasks",),
 )
 

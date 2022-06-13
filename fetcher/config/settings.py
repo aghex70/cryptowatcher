@@ -1,4 +1,8 @@
-websockets_configuration = {
+import os
+
+PROJECT_NAME = "fetcher"
+
+BINANCE_WEBSOCKET_CONFIGURATION = {
     "binance": {
         "source": "binance",
         "url": "wss://stream.binance.com:9443/ws/btcusdt@trade",
@@ -12,3 +16,6 @@ websockets_configuration = {
         },
     },
 }
+
+CELERY_BROKER_URL = os.environ["CELERY_BROKER_URL"]
+CELERY_RESULT_BACKEND = os.environ["CELERY_RESULT_BACKEND"]

@@ -1,8 +1,10 @@
-import logging
 import os
 from concurrent import futures
 
-logger = logging.getLogger("fetcher.serve")
+import grpc
+from app.fetcher import FetcherService
+from config.logger import logger
+from grpc_server import fetcher_pb2_grpc
 
 
 def run_server():
@@ -12,10 +14,6 @@ def run_server():
 
 def _serve(max_workers=2):
     logger.info("Running _serve.")
-    import grpc
-
-    import fetcher_pb2_grpc
-    from service import FetcherService
 
     svc = FetcherService()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=max_workers))
