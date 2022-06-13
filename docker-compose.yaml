@@ -47,7 +47,8 @@ services:
     env_file:
       - ./interceptor/.env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   redis:
     image: redis:alpine
@@ -74,8 +75,6 @@ services:
       - "10001:10001"
     depends_on:
       - db
-#    networks:
-#      - cryptowatcher
     links:
       - fetcher
 
@@ -86,7 +85,11 @@ services:
       - MYSQL_DATABASE=cryptowatcher
       - MYSQL_USER=crypto
       - MYSQL_PASSWORD=crypto
-#      - MYSQL_HOST=db
       - MYSQL_TCP_PORT=10306
     ports:
       - "10306:10306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "db", "-u$$MYSQL_USER", "-p$$MYSQL_ROOT_PASSWORD" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
