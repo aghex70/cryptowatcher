@@ -1,10 +1,8 @@
-import logging
 from typing import Dict
 
 from botocore.exceptions import ClientError
+from config.logger import logger
 from messages.producer import Producer
-
-logger = logging.getLogger(__name__)
 
 
 class SNSProducer(Producer):

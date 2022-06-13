@@ -2,6 +2,7 @@ from typing import Union
 
 import boto3
 from config import settings
+from config.logger import logger
 
 
 class AWSClient:
@@ -13,6 +14,7 @@ class AWSClient:
         :param token: The AWS session token.
         :return: The AWS service client.
         """
+        logger.info("Creating client. Service name: %s", self.service_name)
         if token:
             client = boto3.client(
                 self.service_name,
@@ -28,4 +30,5 @@ class AWSClient:
                 aws_access_key_id=settings.AWS_ACCESS_KEY,
                 aws_secret_access_key=settings.AWS_SECRET_KEY,
             )
+        logger.info("Created client. Service name: %s", self.service_name)
         return client
