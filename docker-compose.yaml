@@ -19,6 +19,11 @@ services:
         - MONGO_INITDB_DATABASE=fetcher
     ports:
       - "27017:27017"
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongodb:27017/fetcher --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   worker:
     build: ./fetcher
@@ -37,7 +42,8 @@ services:
     env_file:
       - ./courier/.env
     depends_on:
-        - mongodb
+        mongodb:
+          condition: service_healthy
 
   interceptor:
     build:

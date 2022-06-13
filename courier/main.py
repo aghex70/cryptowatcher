@@ -16,22 +16,23 @@ SENDER = "sender"
 @click.option("--queue", type=click.Choice([SENDER], case_sensitive=False))
 def main(queue: str) -> None:
     logger.info("Executing main")
-    sent = False
-
+    count, sent = 0, False
     if queue == SENDER:
         sender = run_sender()
         courier = Courier(sender=sender)
-        while not sent:
+        while not sent and count < 10:
             trades = courier.get_trades(limit=10)
             if not trades:
                 logger.warning("No trades found. Retrying in 5 seconds...")
                 time.sleep(5)
                 continue
 
-            logger.info("Got trades: %s", trades)
-            courier.send_trades(trades=trades)
-            sent = True
-            logger.info("Trades sent successfully. SHUTTING DOWN")
+        if not sent:
+            logger.warning("No trades sent. Shutting down...")
+            return
+
+        logger.info("Got trades: %s", trades)
+        courier.send_trades(trades=trades)
 
 
 def run_sender():
@@ -42,4 +43,4 @@ def run_sender():
 
 
 if __name__ == "__main__":
-    main()
+    main(queue=SENDER)
