@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Union
 
 from botocore.exceptions import ClientError
 from config.logger import logger
@@ -15,7 +15,7 @@ class SQSReceiver(QueueReceiver, SQSCommon):
         :param queue_url: SQS queue url
         :return: response
         """
-        logger.info("Receiving message. Url: %s", queue_url)
+        logger.info("Retrieving message. Url: %s", queue_url)
         try:
             response = self.client.receive_message(
                 QueueUrl=queue_url, MaxNumberOfMessages=1
@@ -26,13 +26,13 @@ class SQSReceiver(QueueReceiver, SQSCommon):
             raise exc
         return response
 
-    def receive_messages(self, queue_url: str, **kwargs) -> Dict:
+    def receive_messages(self, queue_url: str, **kwargs) -> Union[Dict, None]:
         """Receive SQS messages
         :param queue_url: SQS queue url
         :kwargs: attributes
         :return: response
         """
-        logger.info("Receiving messages. Url: %s", queue_url)
+        logger.info("Retrieving messages. Url: %s", queue_url)
         messages_number = kwargs["messages_number"]
         if messages_number > 10:
             logger.fatal("Maximum number of messages is 10")
@@ -40,6 +40,11 @@ class SQSReceiver(QueueReceiver, SQSCommon):
             response = self.client.receive_message(
                 QueueUrl=queue_url, MaxNumberOfMessages=messages_number
             )
+            trades = response.get("Messages")
+            if not trades:
+                logger.warning("No messages received from queue. ")
+                return
+
             messages = response["Messages"]
             logger.info("Received messages. Url: %s", queue_url)
         except ClientError as exc:

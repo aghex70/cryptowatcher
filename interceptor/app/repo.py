@@ -11,8 +11,6 @@ from sqlalchemy import (
     Enum,
     Float,
     ForeignKey,
-    Integer,
-    Numeric,
     String,
     create_engine,
     func,

@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict
+from typing import Dict, Union
 
 from queues.base import QueueCommon
 
@@ -10,5 +10,5 @@ class QueueReceiver(QueueCommon):
         raise NotImplementedError
 
     @abstractmethod
-    def receive_messages(self, queue_url: str, **kwargs) -> Dict:
+    def receive_messages(self, queue_url: str, **kwargs) -> Union[Dict, None]:
         raise NotImplementedError

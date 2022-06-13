@@ -1,5 +1,6 @@
 """Module in charge of reading the orders queue and stored them in the database."""
 import json
+import time
 from typing import Dict, List
 
 from app.repo import Trade
@@ -23,16 +24,20 @@ class Interceptor:
         """Get trades from queue"""
         logger.info("Receiving trades")
         messages_kwargs = {"messages_number": 5}
-        received = False
-        while not received:
+        count, received = 0, False
+        while not received and count < 10:
             trades = self.receiver.receive_messages(self.queue_url, **messages_kwargs)
             if not trades:
                 logger.info("No trades received. Retrying in 5 seconds...")
+                time.sleep(5)
+                count += 1
                 continue
 
             received = True
             logger.info("Received trades. Trades: %s", trades)
             self.persist_trades(trades)
+        if not received:
+            logger.warning("No trades received. Shutting down...")
 
     def persist_trades(self, trades: List):
         for trade in trades:
