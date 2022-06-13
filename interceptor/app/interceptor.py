@@ -1,4 +1,5 @@
 """Module in charge of reading the orders queue and stored them in the database."""
+import json
 from typing import Dict, List
 
 from app.repo import Trade
@@ -21,7 +22,7 @@ class Interceptor:
     def receive_trades(self):
         """Get trades from queue"""
         logger.info("Receiving trades")
-        messages_kwargs = {"messages_number": 2}
+        messages_kwargs = {"messages_number": 5}
         received = False
         while not received:
             trades = self.receiver.receive_messages(self.queue_url, **messages_kwargs)
@@ -32,17 +33,26 @@ class Interceptor:
             received = True
             logger.info("Received trades. Trades: %s", trades)
             self.persist_trades(trades)
-        saved_trades = Trade.get_trades()
-        logger.info("Saved trades. Trades: %s", saved_trades)
 
     def persist_trades(self, trades: List):
         for trade in trades:
             self.persist_trade(trade)
-            trade = Trade.create(**trade)
-            trade.save()
 
     def persist_trade(self, trade: Dict):
         receipt_handle = trade.pop("ReceiptHandle", "")
-        logger.info("Persisting trade in database. Trade: %s", trade)
+        logger.info(
+            "Persisting trade in database. Trade: %s, type: %s", trade, type(trade)
+        )
+        trade_body = trade["Body"]
+
+        logger.info("Trade body: %s", trade_body)
+        try:
+            trade_body = json.loads(trade_body)
+            # Only persist certain type of messages
+            if "result" not in trade_body:
+                Trade.create(**trade)
+        except json.JSONDecodeError:
+            logger.error("Error decoding trade body. Trade body: %s", trade_body)
+
         message_kwargs = {"receipt_handle": receipt_handle}
         self.receiver.delete_message(self.queue_url, **message_kwargs)

@@ -21,7 +21,7 @@ def main(queue: str) -> None:
         interceptor = Interceptor(receiver=receiver)
         # while True:
         logger.info("Starting to read trades from queue")
-        response = interceptor.receive_trades()
+        interceptor.receive_trades()
 
 
 def run_receiver():
