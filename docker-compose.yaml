@@ -5,9 +5,9 @@ services:
     build:
       context: ./fetcher
       dockerfile: Dockerfile
-    command: [python, ./fetcher/main.py]
     env_file:
-      - ./fetcher/.env_fetcher
+      - ./fetcher/.env
+    command: [python, /app/fetcher/main.py]
     ports:
       - "10002:10002"
     depends_on:
@@ -26,10 +26,12 @@ services:
       retries: 10
 
   worker:
-    build: ./fetcher
+    build:
+      context: ./fetcher
+      dockerfile: Dockerfile
     env_file:
-      - ./fetcher/.env_fetcher
-    command: [celery, --app, fetcher.worker.app, worker, --concurrency=8, --loglevel=INFO]
+      - ./fetcher/.env
+    command: [celery, --app, fetcher.app.worker.app, worker, --concurrency=8, --loglevel=INFO]
     depends_on:
       - redis
       - mongodb
@@ -58,6 +60,7 @@ services:
 
   redis:
     image: redis:alpine
+    command: [redis-server, --port, "10379"]
 
   flower:
     image: mher/flower
