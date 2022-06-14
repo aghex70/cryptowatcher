@@ -2,6 +2,7 @@ import os
 from concurrent import futures
 
 import grpc
+
 from app.fetcher import FetcherService
 from config.logger import logger
 from grpc_server import fetcher_pb2_grpc

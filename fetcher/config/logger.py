@@ -1,6 +1,9 @@
 import logging
 
-from config.settings import PROJECT_NAME
+try:
+    from config.settings import PROJECT_NAME
+except ModuleNotFoundError:
+    from fetcher.config.settings import PROJECT_NAME
 
 
 def start_logger():

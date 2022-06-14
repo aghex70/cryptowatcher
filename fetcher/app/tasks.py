@@ -8,8 +8,13 @@ import celery
 import motor.motor_asyncio
 import websockets
 from celery import Celery
-from config import settings
-from config.logger import logger
+
+try:
+    from config import settings
+    from config.logger import logger
+except ModuleNotFoundError:
+    from fetcher.config import settings
+    from fetcher.config.logger import logger
 
 app = Celery(
     broker=settings.CELERY_BROKER_URL,
