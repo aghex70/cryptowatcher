@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package fetcher.v1;
+
+option go_package = "cw-api";
+
+service FetcherService {
+  rpc FetchTrades(FetchTradesRequest) returns (FetchTradesResponse) {}
+
+  rpc StopFetchTrades(Empty) returns (StopFetchTradesResponse) {}
+}
+
+message FetchTradesRequest {
+  string source = 1;
+}
+
+message Task {
+  string id = 1;
+}
+
+message FetchTradesResponse {
+  repeated Task tasks = 1;
+}
+
+message StopFetchTradesResponse {
+  bool success = 1;
+}
+
+message Empty {
+
+}
