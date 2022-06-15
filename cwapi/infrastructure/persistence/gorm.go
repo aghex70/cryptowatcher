@@ -1,8 +1,6 @@
 package persistence
 
 import (
-	"fmt"
-	"cwapi/config"
 	"cwapi/internal/logger"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"

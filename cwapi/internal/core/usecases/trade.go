@@ -73,17 +73,18 @@ func (interactor TradeInteractor) StopFetch(r ports.StopFetchRequest) error {
 }
 
 func (interactor TradeInteractor) Get() ([]domain.Trade, error) {
-	interactor.logger.Info("Retrieving trades")
+	interactor.logger.Info("Retrieving trades from database")
 	trades, err := interactor.tradeRepo.GetTrades()
 	if err != nil {
 		return []domain.Trade{}, err
 	}
+
 	return trades, nil
 }
 
 func (interactor TradeInteractor) GetSales() ([]domain.Trade, error) {
 	interactor.logger.Info("Retrieving sales")
-	trades, err := interactor.tradeRepo.GetTradesByEventType()
+	trades, err := interactor.tradeRepo.GetTradesByTradeType(domain.Sell)
 	if err != nil {
 		return []domain.Trade{}, err
 	}
@@ -92,7 +93,7 @@ func (interactor TradeInteractor) GetSales() ([]domain.Trade, error) {
 
 func (interactor TradeInteractor) GetPurchases() ([]domain.Trade, error) {
 	interactor.logger.Info("Retrieving purchases")
-	trades, err := interactor.tradeRepo.GetTrades()
+	trades, err := interactor.tradeRepo.GetTradesByTradeType(domain.Buy)
 	if err != nil {
 		return []domain.Trade{}, err
 	}

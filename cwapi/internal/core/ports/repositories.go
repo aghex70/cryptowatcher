@@ -5,7 +5,7 @@ import "cwapi/internal/core/domain"
 type TradeRepository interface {
 	GetTrades() ([]domain.Trade, error)
 	GetTradesBySymbol(symbol string) ([]domain.Trade, error)
-	GetTradesByEventType(eventType domain.EventType) ([]domain.Trade, error)
+	GetTradesByTradeType(TradeType domain.TradeType) ([]domain.Trade, error)
 	GetTradesByUserIdAndExternalId(map[string]int) ([]domain.Trade, error)
 }
 

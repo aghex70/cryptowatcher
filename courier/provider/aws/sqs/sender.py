@@ -109,7 +109,7 @@ class SQSSender(QueueSender, SQSCommon):
     def send_messages(self, queue_url: str, messages: List) -> Dict:
         """Send multiple messages to SQS queue
         :param queue_url: SQS queue url
-        :param kwargs: messages
+        :param messages: messages
         :return: response
         """
         logger.info("Sending messages. Url: %s", queue_url)

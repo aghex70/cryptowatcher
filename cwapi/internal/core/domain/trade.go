@@ -7,43 +7,46 @@ import (
 	"cwapi/internal/errors"
 )
 
-type EventType string
+type TradeType string
 
 const (
-	Sell EventType = "sell"
-	Buy  EventType = "buy"
+	Buy  TradeType = "BUY"
+	Sell TradeType = "SELL"
 )
 
 type Trade struct {
-	EventType  EventType
-	ExternalID int64
-	Symbol     string
-	Price      float32
-	Currency   string
-	Quantity   float32
-	EventTime  time.Time
-	TradeTime  time.Time
-	BuyerID    int64
-	SellerID   int64
-	Source     string
+	ProviderID  int64
+	TradeID     int64
+	SymbolsFrom string
+	SymbolsTo   string
+	Currency    string
+	Price       float32
+	Quantity    float32
+	TradeType   TradeType
+	EventTime   time.Time
+	TradeTime   time.Time
+	BuyerID     int64
+	SellerID    int64
 }
 
-func NewTrade(maker bool, externalID int64, symbol string, price float32, quantity float32, eventTime time.Time, tradeTime time.Time, buyerID int64, sellerID int64, source string) Trade {
+func NewTrade(maker bool, providerID int64, tradeID int64, symbolFrom string, symbolTo string, currency string, price float32, quantity float32, eventTime time.Time, tradeTime time.Time, buyerID int64, sellerID int64) Trade {
 	return Trade{
-		EventType:  MakerToEventType(maker),
-		ExternalID: externalID,
-		Symbol:     symbol,
-		Price:      price,
-		Quantity:   quantity,
-		EventTime:  eventTime,
-		TradeTime:  tradeTime,
-		BuyerID:    buyerID,
-		SellerID:   sellerID,
-		Source:     source,
+		ProviderID:  providerID,
+		TradeID:     tradeID,
+		SymbolsFrom: symbolFrom,
+		SymbolsTo:   symbolTo,
+		Currency:    currency,
+		Price:       price,
+		Quantity:    quantity,
+		TradeType:   MakerToTradeType(maker),
+		EventTime:   eventTime,
+		TradeTime:   tradeTime,
+		BuyerID:     buyerID,
+		SellerID:    sellerID,
 	}
 }
 
-func MakerToEventType(maker bool) EventType {
+func MakerToTradeType(maker bool) TradeType {
 	if maker == true {
 		return Sell
 	}

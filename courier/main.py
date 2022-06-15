@@ -27,12 +27,14 @@ def main(queue: str) -> None:
                 time.sleep(5)
                 continue
 
+            logger.info("Got trades: %s", trades)
+            courier.send_trades(trades=trades)
+            sent = True
+
         if not sent:
             logger.warning("No trades sent. Shutting down...")
             return
 
-        logger.info("Got trades: %s", trades)
-        courier.send_trades(trades=trades)
 
 
 def run_sender():
@@ -43,4 +45,4 @@ def run_sender():
 
 
 if __name__ == "__main__":
-    main(queue=SENDER)
+    main()

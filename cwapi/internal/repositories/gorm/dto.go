@@ -20,32 +20,34 @@ func fromUserDto(u domain.User) User {
 
 func (t Trade) toDto() domain.Trade {
 	return domain.Trade{
-		EventType:  t.EventType,
-		ExternalID: int64(t.ExternalID),
-		Symbol:     t.Symbol,
-		Price:      t.Price,
-		Currency:   t.Currency,
-		Quantity:   t.Quantity,
-		EventTime:  t.EventTime,
-		TradeTime:  t.TradeTime,
-		BuyerID:    int64(t.BuyerID),
-		SellerID:   int64(t.SellerID),
-		Source:     t.Source,
+		ProviderID:  int64(t.ProviderID),
+		TradeID:     int64(t.TradeID),
+		SymbolsFrom: t.SymbolsFrom,
+		SymbolsTo:   t.SymbolsTo,
+		Currency:    t.Currency,
+		Price:       t.Price,
+		Quantity:    t.Quantity,
+		TradeType:   t.TradeType,
+		EventTime:   t.EventTime,
+		TradeTime:   t.TradeTime,
+		BuyerID:     int64(t.BuyerID),
+		SellerID:    int64(t.SellerID),
 	}
 }
 
 func fromTradeDto(t domain.Trade) Trade {
 	return Trade{
-		EventType:  t.EventType,
-		ExternalID: int(t.ExternalID),
-		Symbol:     t.Symbol,
-		Price:      t.Price,
-		Currency:   t.Currency,
-		Quantity:   t.Quantity,
-		EventTime:  t.EventTime,
-		TradeTime:  t.TradeTime,
-		BuyerID:    int(t.BuyerID),
-		SellerID:   int(t.SellerID),
-		Source:     t.Source,
+		ProviderID:  int(t.ProviderID),
+		TradeID:     int(t.TradeID),
+		SymbolsFrom: t.SymbolsFrom,
+		SymbolsTo:   t.SymbolsTo,
+		Currency:    t.Currency,
+		Price:       t.Price,
+		Quantity:    t.Quantity,
+		TradeType:   t.TradeType,
+		EventTime:   t.EventTime,
+		TradeTime:   t.TradeTime,
+		BuyerID:     int(t.BuyerID),
+		SellerID:    int(t.SellerID),
 	}
 }
