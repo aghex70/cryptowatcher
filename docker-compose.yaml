@@ -73,7 +73,7 @@ services:
       - worker
       - redis
 
-  gapi:
+  cwapi:
     build:
       context: cwapi
       dockerfile: Dockerfile

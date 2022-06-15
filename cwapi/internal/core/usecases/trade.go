@@ -38,12 +38,12 @@ func (interactor TradeInteractor) Fetch(r ports.FetchRequest) (*providers.FetchT
 	}(conn)
 
 	client := providers.NewFetcherServiceClient(conn)
-	interactor.logger.Info("Creating fetcher gRPC client")
 	res, err := client.FetchTrades(context.Background(), &providers.FetchTradesRequest{Source: r.Source})
 	if err != nil {
 		interactor.logger.Error("error starting fetching process in provider", zap.Error(err))
 		return &providers.FetchTradesResponse{}, err
 	}
+	interactor.logger.Info("Started fetching process in provider")
 	return res, nil
 }
 
@@ -63,26 +63,38 @@ func (interactor TradeInteractor) StopFetch(r ports.StopFetchRequest) error {
 	}(conn)
 
 	client := providers.NewFetcherServiceClient(conn)
-	interactor.logger.Info("Creating fetcher gRPC client")
 	_, err = client.StopFetchTrades(context.Background(), &providers.Empty{})
 	if err != nil {
 		interactor.logger.Error("error ending fetching process in provider", zap.Error(err))
 		return err
 	}
+	interactor.logger.Info("Ended fetching process in provider")
 	return nil
 }
 
 func (interactor TradeInteractor) Get() ([]domain.Trade, error) {
 	interactor.logger.Info("Retrieving trades")
-	return []domain.Trade{}, nil
+	trades, err := interactor.tradeRepo.GetTrades()
+	if err != nil {
+		return []domain.Trade{}, err
+	}
+	return trades, nil
 }
 
 func (interactor TradeInteractor) GetSales() ([]domain.Trade, error) {
 	interactor.logger.Info("Retrieving sales")
-	return []domain.Trade{}, nil
+	trades, err := interactor.tradeRepo.GetTradesByEventType()
+	if err != nil {
+		return []domain.Trade{}, err
+	}
+	return trades, nil
 }
 
 func (interactor TradeInteractor) GetPurchases() ([]domain.Trade, error) {
 	interactor.logger.Info("Retrieving purchases")
-	return []domain.Trade{}, nil
+	trades, err := interactor.tradeRepo.GetTrades()
+	if err != nil {
+		return []domain.Trade{}, err
+	}
+	return trades, nil
 }

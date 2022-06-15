@@ -3,7 +3,7 @@ package config
 import "log"
 
 const (
-	CONFIG_NAME string = ".env_gapi"
+	CONFIG_NAME string = ".env"
 	CONFIG_TYPE string = "env"
 	CONFIG_PATH string = "./config/"
 )
