@@ -75,11 +75,11 @@ services:
 
   gapi:
     build:
-      context: ./gapi
+      context: cwapi
       dockerfile: Dockerfile
     command: [go, run, ./cmd/main.go]
     env_file:
-      - ./gapi/config/.env_gapi
+      - cwapi/config/.env
     ports:
       - "10001:10001"
     depends_on:

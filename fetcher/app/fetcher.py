@@ -12,7 +12,6 @@ class FetcherService(trades_pb2_grpc.FetcherServiceServicer):
     def FetchTrades(
         self, request: trades_pb2.FetchTradesRequest, context
     ) -> trades_pb2.FetchTradesResponse:
-        logger.info(locals())
         logger.info("FetchTrades called. Request: %s", request)
         result = self._handle_fetch_request(request)
         return trades_pb2.FetchTradesResponse(
