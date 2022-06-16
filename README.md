@@ -12,6 +12,3 @@ them all in a single project Taking this into consideration, there will be some 
 
 ## Architecture
 ![cryptowatcher proposed architecture](https://github.com/aghex70/cryptowatcher/blob/master/architecture.jpg)
-
-## Work in progress
-
