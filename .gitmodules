@@ -1,3 +1,6 @@
 [submodule "fetcher"]
 	path = fetcher
 	url = https://github.com/aghex70/cwfetcher
+[submodule "interceptor"]
+	path = interceptor
+	url = https://github.com/aghex70/interceptor-py
