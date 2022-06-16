@@ -7,3 +7,6 @@
 [submodule "courier"]
 	path = courier
 	url = https://github.com/aghex70/courier-py
+[submodule "cwapi"]
+	path = cwapi
+	url = https://github.com/aghex70/cwapi
