@@ -4,3 +4,6 @@
 [submodule "interceptor"]
 	path = interceptor
 	url = https://github.com/aghex70/interceptor-py
+[submodule "courier"]
+	path = courier
+	url = https://github.com/aghex70/courier-py
